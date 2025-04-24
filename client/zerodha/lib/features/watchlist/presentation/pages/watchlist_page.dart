@@ -17,8 +17,6 @@ class WatchListPage extends ConsumerStatefulWidget {
 
 class _WatchListPageState extends ConsumerState<WatchListPage>
     with SingleTickerProviderStateMixin {
-  int selectedWatchlistIndex = 0;
-
   final List<Tab> watchlistTabs = [
     Tab(text: "Watchlist 0"),
     Tab(text: "Watchlist 1"),
@@ -105,7 +103,7 @@ class _WatchListPageState extends ConsumerState<WatchListPage>
                 ),
               ),
               trailing: [
-                Text("5/100"),
+                Text("10 / ${stockState.value?.length.toString() ?? "0"}"),
                 SizedBox(width: AppConstant.double10),
                 Container(width: 1, height: 15, color: Colors.grey),
                 SizedBox(width: AppConstant.double10),

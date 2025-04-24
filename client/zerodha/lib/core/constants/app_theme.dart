@@ -5,6 +5,11 @@ import 'package:zerodha/core/constants/app_constant.dart';
 class AppTheme {
   static ThemeData dark() {
     return ThemeData(
+      fontFamily: 'OpenSans',
+      bottomAppBarTheme: BottomAppBarTheme(
+        color: AppColor.blackColor,
+        elevation: AppConstant.double0,
+      ),
       iconTheme: IconThemeData(
         size: AppConstant.double20,
         color: AppColor.whiteColor,
@@ -28,6 +33,16 @@ class AppTheme {
         enableFeedback: true,
         selectedIconTheme: IconThemeData(size: AppConstant.double20),
         unselectedIconTheme: IconThemeData(size: AppConstant.double20),
+      ),
+      switchTheme: SwitchThemeData(
+        trackOutlineColor: WidgetStateProperty.all(AppColor.transparentColor),
+        thumbIcon: WidgetStateProperty.all(
+          Icon(Icons.check, color: AppColor.whiteColor),
+        ),
+        thumbColor: WidgetStateProperty.all(AppColor.whiteColor),
+        trackColor: WidgetStateProperty.all(
+          AppColor.blueColor.withValues(alpha: AppConstant.double0_5),
+        ),
       ),
     );
   }

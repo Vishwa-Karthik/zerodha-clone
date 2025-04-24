@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fuzzy_bolt/fuzzy_bolt.dart';
-import 'package:zerodha/features/watchlist/presentation/models/stock_model.dart';
 import 'package:zerodha/core/connection/web_socket_service.dart';
+import 'package:zerodha/core/constants/app_constant.dart';
+import 'package:zerodha/features/watchlist/presentation/models/stock_model.dart';
 
 final stockStateProvider =
     StateNotifierProvider<StocksNotifier, AsyncValue<List<StockModel>>>(
@@ -16,18 +17,33 @@ class StocksNotifier extends StateNotifier<AsyncValue<List<StockModel>>> {
 
   final WebSocketService _webSocketService = WebSocketService();
   List<StockModel> _allStocks = [];
+  List<StockModel> _filteredStocks = [];
   bool _isFiltering = false;
+  String _currentQuery = '';
 
   void _connectWebSocket() {
     state = const AsyncLoading();
     try {
       _webSocketService.connect(
-        url:
-            kIsWeb ? "ws://localhost:8080/stocks" : 'ws://10.0.2.2:8080/stocks',
-        onMessage: (stocks) {
+        url: kIsWeb ? AppConstant.kLocalHost : AppConstant.kEmulatorLocalHost,
+        onMessage: (stocks) async {
           _allStocks = stocks;
 
-          if (!_isFiltering) {
+          if (_isFiltering) {
+            // Apply the current query to the new data
+            final result = await FuzzyBolt().search(
+              dataset:
+                  _allStocks.map((e) => e.ticker ?? '').cast<String>().toList(),
+              query: _currentQuery,
+            );
+            _filteredStocks =
+                _allStocks
+                    .where(
+                      (stock) => result.contains(stock.ticker?.toLowerCase()),
+                    )
+                    .toList();
+            state = AsyncValue.data(_filteredStocks);
+          } else {
             state = AsyncValue.data(_allStocks);
           }
         },
@@ -47,6 +63,7 @@ class StocksNotifier extends StateNotifier<AsyncValue<List<StockModel>>> {
   }
 
   Future<void> filterStocks(String query) async {
+    _currentQuery = query;
     if (query.isEmpty) {
       _isFiltering = false;
       state = AsyncValue.data(_allStocks);
@@ -56,18 +73,16 @@ class StocksNotifier extends StateNotifier<AsyncValue<List<StockModel>>> {
         dataset: _allStocks.map((e) => e.ticker ?? '').cast<String>().toList(),
         query: query,
       );
-      final filteredStocks =
+      _filteredStocks =
           _allStocks
               .where((stock) => result.contains(stock.ticker?.toLowerCase()))
               .toList();
 
-      state = AsyncValue.data(filteredStocks);
+      state = AsyncValue.data(_filteredStocks);
     }
   }
 
-  void retryConnection() {
-    _connectWebSocket();
-  }
+  void retryConnection() => _connectWebSocket();
 
   @override
   void dispose() {

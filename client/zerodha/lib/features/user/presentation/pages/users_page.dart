@@ -1,37 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zerodha/core/constants/app_color.dart';
+import 'package:zerodha/core/constants/app_constant.dart';
+import 'package:zerodha/features/user/presentation/providers/privacy_mode_provider.dart';
 import 'package:zerodha/features/user/presentation/widgets/account_action_list_tile.dart';
 
-class UsersPage extends StatefulWidget {
+class UsersPage extends ConsumerWidget {
   const UsersPage({super.key});
 
-  @override
-  State<UsersPage> createState() => _UsersPageState();
-}
-
-class _UsersPageState extends State<UsersPage> {
-  final List<AccountUserInteractionModel> accountUserInteractionModel = [
+  static final List<AccountUserInteractionModel> accountUserInteractionModel = [
     AccountUserInteractionModel(
-        index: 1, text: "Funds", iconData: FontAwesomeIcons.indianRupeeSign),
+      index: 1,
+      text: "Funds",
+      iconData: FontAwesomeIcons.indianRupeeSign,
+    ),
     AccountUserInteractionModel(
-        index: 2, text: "App Code", iconData: FontAwesomeIcons.unlock),
+      index: 2,
+      text: "App Code",
+      iconData: FontAwesomeIcons.unlock,
+    ),
     AccountUserInteractionModel(
-        index: 3, text: "Profile", iconData: FontAwesomeIcons.person),
+      index: 3,
+      text: "Profile",
+      iconData: FontAwesomeIcons.user,
+    ),
     AccountUserInteractionModel(
-        index: 4, text: "Settings", iconData: FontAwesomeIcons.gear),
+      index: 4,
+      text: "Settings",
+      iconData: FontAwesomeIcons.gear,
+    ),
     AccountUserInteractionModel(
-        index: 5, text: "Connected Apps", iconData: FontAwesomeIcons.cube),
+      index: 5,
+      text: "Connected Apps",
+      iconData: FontAwesomeIcons.cube,
+    ),
     AccountUserInteractionModel(
-        index: 6,
-        text: "Logout",
-        iconData: FontAwesomeIcons.arrowRightFromBracket),
+      index: 6,
+      text: "Logout",
+      iconData: FontAwesomeIcons.arrowRightFromBracket,
+    ),
   ];
 
-  bool switchValue = false;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final privacyMode = ref.watch(privacyModeProvider);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -44,10 +57,9 @@ class _UsersPageState extends State<UsersPage> {
               children: [
                 Text(
                   "Account",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall
-                      ?.copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 IconButton(
                   onPressed: () {},
@@ -63,7 +75,9 @@ class _UsersPageState extends State<UsersPage> {
               children: [
                 Text(
                   "Vishwa Karthik",
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
                 ),
                 IconButton(
                   onPressed: () {},
@@ -96,29 +110,31 @@ class _UsersPageState extends State<UsersPage> {
                           children: [
                             Text(
                               "VK0000",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColor.whiteColor),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: AppColor.whiteColor,
+                              ),
                             ),
                             Text(
-                              "vishwa.prarthana@gmail.com",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColor.whiteColor),
+                              AppConstant.email,
+                              style: Theme.of(context).textTheme.titleSmall
+                                  ?.copyWith(fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
                         CircleAvatar(
-                          minRadius: MediaQuery.sizeOf(context).width * 0.08,
-                          backgroundColor: Colors.blue.shade800,
-                          child: Text("VH",
-                              style: Theme.of(context).textTheme.titleLarge),
+                          minRadius: MediaQuery.sizeOf(context).height * 0.04,
+                          backgroundColor: AppColor.blueColor.withValues(
+                            alpha: 0.2,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "VK",
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -133,19 +149,21 @@ class _UsersPageState extends State<UsersPage> {
                         children: [
                           Text(
                             "Privacy Mode",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColor.whiteColor),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: AppColor.whiteColor,
+                            ),
                           ),
                           Switch.adaptive(
-                            value: switchValue,
+                            inactiveTrackColor: AppColor.greyColor.withValues(
+                              alpha: 0.5,
+                            ),
+                            value: privacyMode,
                             onChanged: (bool value) {
-                              setState(() {
-                                switchValue = value;
-                              });
+                              ref.read(privacyModeProvider.notifier).state =
+                                  value;
                             },
                           ),
                         ],
@@ -160,13 +178,12 @@ class _UsersPageState extends State<UsersPage> {
             //
             Text(
               "Account",
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(color: AppColor.greyColor),
             ),
 
-            Divider(
-              color: Colors.grey.shade200,
-              thickness: 0.2,
-            ),
+            Divider(),
 
             //
             AccountActionListTile(
@@ -185,6 +202,9 @@ class AccountUserInteractionModel {
   final String? text;
   final IconData? iconData;
 
-  AccountUserInteractionModel(
-      {required this.index, required this.text, required this.iconData});
+  AccountUserInteractionModel({
+    required this.index,
+    required this.text,
+    required this.iconData,
+  });
 }
