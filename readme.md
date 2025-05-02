@@ -65,24 +65,32 @@ ws://localhost:8080/stocks
 flutter run 
 ```
 
+Note - You may use adb port transfer like below if needed to avoid confusion.
+```bash
+adb transfer tcp:8080 tcp:8080
+```
+
 
 ## Screenshots
 
 <div style="display: flex; justify-content: space-around;">
     <img src="assets/page_1.png" alt="Page 1" width="45%" />
-    <img src="assets/page_2.png" alt="Page 2" width="45%" />
+    <img src="assets/page_8.png" alt="Page 8" width="45%" />
 </div>
 
 <div style="display: flex; justify-content: space-around; margin-top: 10px;">
+    <img src="assets/page_2.png" alt="Page 2" width="45%" />
     <img src="assets/page_3.png" alt="Page 3" width="45%" />
-    <img src="assets/page_6.png" alt="Page 6" width="45%" />
 </div>
 
 <div style="display: flex; justify-content: space-around; margin-top: 10px;">
     <img src="assets/page_4.png" alt="Page 4" width="45%" />
     <img src="assets/page_5.png" alt="Page 5" width="45%" />
-
 </div>
+<div style="display: flex; justify-content: space-around; margin-top: 10px;">
+    <img src="assets/page_6.png" alt="Page 6" width="45%" />
+</div>
+
 <div style="display: flex; justify-content: space-around; margin-top: 10px;" >
     <img src="assets/page_7.png" alt="Page 7" width="95%" />
 

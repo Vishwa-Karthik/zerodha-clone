@@ -14,5 +14,5 @@ class AppConstant {
 
   //
   static const String kLocalHost = 'ws://localhost:8080/stocks';
-  // static const String kEmulatorLocalHost = 'ws://10.0.2.2:8080/stocks';
+  static const String kEmulatorLocalHost = 'ws://10.0.2.2:8080/stocks';
 }
