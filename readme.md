@@ -3,6 +3,27 @@
 - The application is designed to provide real-time mocked stock updates integrating only the **Watchlist Page**.
 ---
 
+## Demo
+
+### Start Server Locally
+- Navigate to the backend directory.
+```bash
+cd ./server
+```
+- Run the WebSocket server:
+```bash
+go run cmd/main.go
+```
+
+### Install Apk from Github (Preferred)
+ + Simply start the server on localhost and install the apk from [APK](https://github.com/Vishwa-Karthik/zerodha-clone/tags)
+ + To keep things simple, I've just hardcoded this entire project to run it on `localhost` via `port:8080`
+
+### Just Run the Project on Edge/Chrome
+```bash
+flutter run -d chrome
+```
+
 ## Tech Stack
 
 ### 1. **Frontend**: Flutter
@@ -45,18 +66,18 @@ cd ./server
 go run cmd/main.go
 ```
 
-### 2. Client
-- Navigate to the backend directory.
+### 2. Manual Debug Client 
+- Navigate to the client directory.
 ```bash
 cd ./client/zerodha_clone
 ```
 
-- If you're running this project on emulator then, update the emulator's IP Address
+- If you're running this project on emulator then, client runs automatically on emulator's IP address -
 ```bash
 ws://10.0.2.2:8080/stocks
 ```
 
-- If you're running this project on web / physical device then
+- If you're running this project on web then client runs automatically on below address -
 ```bash
 ws://localhost:8080/stocks
 ```
@@ -65,7 +86,7 @@ ws://localhost:8080/stocks
 flutter run 
 ```
 
-Note - You may use adb port transfer like below if needed to avoid confusion.
+Note - Alternatively, you may use adb port transfer like below if needed to avoid confusion.
 ```bash
 adb transfer tcp:8080 tcp:8080
 ```
