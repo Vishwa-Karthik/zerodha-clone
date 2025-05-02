@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -11,7 +10,7 @@ import 'package:zerodha/features/watchlist/presentation/pages/watchlist_page.dar
 
 class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});
-  
+
   static final List<BottomNavigationBarItem> bottomNavBarItems = [
     BottomNavigationBarItem(
       icon: FaIcon(FontAwesomeIcons.bookmark),
@@ -55,6 +54,10 @@ class DashboardPage extends ConsumerWidget {
             showSelectedLabels: true,
             showUnselectedLabels: true,
             items: bottomNavBarItems,
+            selectedFontSize:
+                Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14,
+            unselectedFontSize:
+                Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14,
             onTap: (int index) {
               ref.read(bottomIndeProvider.notifier).state = index;
             },
@@ -64,4 +67,3 @@ class DashboardPage extends ConsumerWidget {
     );
   }
 }
-

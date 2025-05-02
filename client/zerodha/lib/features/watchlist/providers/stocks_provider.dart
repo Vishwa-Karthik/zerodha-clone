@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fuzzy_bolt/fuzzy_bolt.dart';
 import 'package:zerodha/core/connection/web_socket_service.dart';
@@ -25,7 +24,7 @@ class StocksNotifier extends StateNotifier<AsyncValue<List<StockModel>>> {
     state = const AsyncLoading();
     try {
       _webSocketService.connect(
-        url: kIsWeb ? AppConstant.kLocalHost : AppConstant.kEmulatorLocalHost,
+        url: AppConstant.kLocalHost,
         onMessage: (stocks) async {
           _allStocks = stocks;
 

@@ -24,12 +24,12 @@ func main() {
 
 	routes.RegisterRoutes(r)
 
-	go internal.StartStockBroadcaster() // Start goroutine for stock updates
+	go internal.StartStockBroadcaster()
 
 	port := os.Getenv("PORT")
 	if port != "" {
 		port = "8080"
 	}
 
-	log.Fatal(r.Run(":" + port))
+	log.Fatal(r.Run("0.0.0.0:" + port))
 }

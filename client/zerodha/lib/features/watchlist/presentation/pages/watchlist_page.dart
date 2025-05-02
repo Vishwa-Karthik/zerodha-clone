@@ -103,7 +103,15 @@ class _WatchListPageState extends ConsumerState<WatchListPage>
                 ),
               ),
               trailing: [
-                Text("10 / ${stockState.value?.length.toString() ?? "0"}"),
+                stockState.when(
+                  loading: () => Text("10 / 20"),
+                  error: (error, stackTrace) => Text("10 / 20"),
+                  data: (stocks) {
+                    return Text(
+                      "10 / ${stockState.value?.length.toString() ?? "0"}",
+                    );
+                  },
+                ),
                 SizedBox(width: AppConstant.double10),
                 Container(width: 1, height: 15, color: Colors.grey),
                 SizedBox(width: AppConstant.double10),

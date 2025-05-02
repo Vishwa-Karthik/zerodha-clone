@@ -5,6 +5,7 @@ class AppConstant {
   static const double double8 = 8.0;
   static const double double10 = 10.0;
   static const double double12 = 12.0;
+  static const double double15 = 15.0;
   static const double double14 = 14.0;
   static const double double20 = 20.0;
   static const double double24 = 24.0;
@@ -13,5 +14,5 @@ class AppConstant {
 
   //
   static const String kLocalHost = 'ws://localhost:8080/stocks';
-  static const String kEmulatorLocalHost = 'ws://10.0.2.2:8080/stocks';
+  // static const String kEmulatorLocalHost = 'ws://10.0.2.2:8080/stocks';
 }
