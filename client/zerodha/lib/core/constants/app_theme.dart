@@ -15,7 +15,7 @@ class AppTheme {
         color: AppColor.whiteColor,
       ),
       brightness: Brightness.dark,
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         indicatorColor: AppColor.blueColor,
         dividerColor: AppColor.transparentColor,
         labelColor: AppColor.blueColor,
@@ -54,7 +54,7 @@ class AppTheme {
         size: AppConstant.double20,
         color: AppColor.blackColor,
       ),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         indicatorColor: AppColor.blueColor,
         dividerColor: AppColor.transparentColor,
         labelColor: AppColor.blueColor,

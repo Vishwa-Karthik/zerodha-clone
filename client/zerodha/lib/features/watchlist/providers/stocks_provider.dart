@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fuzzy_bolt/fuzzy_bolt.dart';
 import 'package:zerodha/core/connection/web_socket_service.dart';
 import 'package:zerodha/core/constants/app_constant.dart';
+import 'package:zerodha/core/utils/static_stocks.dart';
 import 'package:zerodha/features/watchlist/presentation/models/stock_model.dart';
 
 final stockStateProvider =
@@ -12,7 +13,11 @@ final stockStateProvider =
 
 class StocksNotifier extends StateNotifier<AsyncValue<List<StockModel>>> {
   StocksNotifier() : super(const AsyncLoading()) {
-    _connectWebSocket();
+    if (kIsWeb) {
+      mockConnectWebSocket();
+    } else {
+      _connectWebSocket();
+    }
   }
 
   final WebSocketService _webSocketService = WebSocketService();
@@ -21,11 +26,41 @@ class StocksNotifier extends StateNotifier<AsyncValue<List<StockModel>>> {
   bool _isFiltering = false;
   String _currentQuery = '';
 
+  void mockConnectWebSocket() async {
+    try {
+      state = const AsyncLoading();
+      // Simulate a delay to mimic real-time data fetching
+      await Future.delayed(const Duration(seconds: 2));
+
+      await for (final stocks in StaticStocks.mockStockStream()) {
+        _allStocks = stocks;
+      
+
+      if (_isFiltering) {
+        final result = await FuzzyBolt().search(
+          dataset:
+              stocks.map((e) => e.ticker ?? '').cast<String>().toList(),
+          query: _currentQuery,
+        );
+        _filteredStocks =
+            stocks
+                .where((stock) => result.contains(stock.ticker?.toLowerCase()))
+                .toList();
+        state = AsyncValue.data(_filteredStocks);
+      } else {
+        state = AsyncValue.data(stocks);
+      }
+    }
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
   void _connectWebSocket() {
     state = const AsyncLoading();
     try {
       _webSocketService.connect(
-        url: kIsWeb ? AppConstant.kLocalHost : AppConstant.kEmulatorLocalHost,
+        url: AppConstant.kEmulatorLocalHost,
         onMessage: (stocks) async {
           _allStocks = stocks;
 
